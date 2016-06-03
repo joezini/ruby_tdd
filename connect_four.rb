@@ -107,3 +107,14 @@ class Grid
 		winner
 	end
 end
+
+class Game
+	def initialize
+		puts "Welcome to Connect Four!"
+		grid = Grid.new
+		move = gets
+		# puts "Move is #{move.to_i}"
+		grid.drop('O', move.to_i)
+		puts grid.layout
+	end
+end

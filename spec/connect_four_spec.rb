@@ -1,12 +1,6 @@
 require_relative '../connect_four'
 
-describe Grid do
-	context "with new grid" do
-		before :each do
-			@grid = Grid.new
-		end
-		before :all do
-			@empty_layout = %Q(| | | | | | | |
+empty_layout = %Q(| | | | | | | |
 | | | | | | | |
 | | | | | | | |
 | | | | | | | |
@@ -14,7 +8,7 @@ describe Grid do
 | | | | | | | |
 TTTTTTTTTTTTTTT
  1 2 3 4 5 6 7)
-			@layout_with_one_token = %Q(| | | | | | | |
+layout_with_one_token = %Q(| | | | | | | |
 | | | | | | | |
 | | | | | | | |
 | | | | | | | |
@@ -22,7 +16,7 @@ TTTTTTTTTTTTTTT
 | | | |O| | | |
 TTTTTTTTTTTTTTT
  1 2 3 4 5 6 7)
- 			@layout_with_a_few_tokens = %Q(| | | | | | | |
+layout_with_a_few_tokens = %Q(| | | | | | | |
 | | | | | | | |
 | | | | | | | |
 | | | | | | | |
@@ -30,18 +24,23 @@ TTTTTTTTTTTTTTT
 | |X|X|O| | | |
 TTTTTTTTTTTTTTT
  1 2 3 4 5 6 7)			
-			@empty_placements = Array.new(6) {Array.new(7, " ")}
+empty_placements = Array.new(6) {Array.new(7, " ")}
+
+describe Grid do
+	context "with new grid" do
+		before :each do
+			@grid = Grid.new
 		end
 
 		it "displays an empty grid" do
-			expect(@grid.layout).to eq(@empty_layout)
+			expect(@grid.layout).to eq(empty_layout)
 		end
 		it "creates an empty token array" do
-			expect(@grid.placements).to eq(@empty_placements)
+			expect(@grid.placements).to eq(empty_placements)
 		end
 		it "displays a game token" do
 			@grid.placements[5][3] = "O"
-			expect(@grid.layout).to eq(@layout_with_one_token)
+			expect(@grid.layout).to eq(layout_with_one_token)
 		end
 		it "displays a few game tokens" do
 			@grid.placements[5][3] = "O"
@@ -49,7 +48,7 @@ TTTTTTTTTTTTTTT
 			@grid.placements[4][2] = "O"
 			@grid.placements[5][1] = "X"
 			@grid.placements[4][1] = "O"
-			expect(@grid.layout).to eq(@layout_with_a_few_tokens)
+			expect(@grid.layout).to eq(layout_with_a_few_tokens)
 		end
 		it "drops a token to the correct placement" do
 			@grid.drop("O", 3)
@@ -57,7 +56,7 @@ TTTTTTTTTTTTTTT
 		end
 		it "shows dropped token" do
 			@grid.drop("O", 3)
-			expect(@grid.layout).to eq(@layout_with_one_token)
+			expect(@grid.layout).to eq(layout_with_one_token)
 		end
 		it "doesn't add a token to a full column" do
 			@grid.drop("X", 3)
@@ -97,5 +96,22 @@ TTTTTTTTTTTTTTT
 			@grid.placements[3][3] = "O"
 			expect(@grid.check_winner).to eq("O")
 		end
+	end
+end
+
+describe Game do
+	# before :each do
+	# 	@game = Game.new
+	# end
+	it "prints 'Welcome to Connect Four!' to the screen" do
+		expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
+		game = Game.new 
+	end
+
+	it "accepts input from the first player and prints the new layout" do
+		expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!").ordered
+		expect(Game).to receive(:gets).and_return("3")
+		expect(STDOUT).to receive(:puts).with(layout_with_one_token).ordered
+		game = Game.new
 	end
 end
