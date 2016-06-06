@@ -1,4 +1,4 @@
-require_relative '../connect_four'
+require 'spec_helper'
 
 empty_layout = %Q(| | | | | | | |
 | | | | | | | |
@@ -100,18 +100,19 @@ describe Grid do
 end
 
 describe Game do
-	# before :each do
-	# 	@game = Game.new
-	# end
-	it "prints 'Welcome to Connect Four!' to the screen" do
-		expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
-		game = Game.new 
+	describe '#initialize' do
+		it "prints 'Welcome to Connect Four!' to the screen" do
+			expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
+			game = Game.new 
+		end
 	end
 
-	it "accepts input from the first player and prints the new layout" do
-		expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!").ordered
-		expect(Game).to receive(:gets).and_return("3")
-		expect(STDOUT).to receive(:puts).with(layout_with_one_token).ordered
-		game = Game.new
+	describe '#start_game' do
+		it "accepts input from the first player and prints the new layout" do
+			expect(subject).to receive(:gets).and_return("3\n")
+			expect(STDOUT).to receive(:puts).with(layout_with_one_token)
+			subject.start_game
+			expect(subject.instance_variable_get(:@move)).to eq("3")
+		end
 	end
 end

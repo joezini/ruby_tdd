@@ -109,12 +109,16 @@ class Grid
 end
 
 class Game
+	attr_reader :move
+
 	def initialize
 		puts "Welcome to Connect Four!"
+	end
+
+	def start_game
 		grid = Grid.new
-		move = gets
-		# puts "Move is #{move.to_i}"
-		grid.drop('O', move.to_i)
+		@move = gets.chomp
+		grid.drop('O', @move.to_i)
 		puts grid.layout
 	end
 end
