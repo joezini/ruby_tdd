@@ -109,16 +109,34 @@ class Grid
 end
 
 class Game
-	attr_reader :move
+	attr_reader :move, :current_player
 
 	def initialize
 		puts "Welcome to Connect Four!"
+		start_game
 	end
 
 	def start_game
 		grid = Grid.new
-		@move = gets.chomp
-		grid.drop('O', @move.to_i)
-		puts grid.layout
+		@current_player = 'O'
+		#while grid.check_winner == '' do
+		2.times do
+			puts "Player #{@current_player}, your turn:"
+			@move = gets.chomp
+			if @move == 'q'
+				break
+			end
+			grid.drop(@current_player, @move.to_i - 1)
+			puts grid.layout
+			swap_player
+		end
+	end
+
+	def swap_player
+		if @current_player == 'O'
+			@current_player = 'X'
+		else
+			@current_player = 'O'
+		end
 	end
 end
