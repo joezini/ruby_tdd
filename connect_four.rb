@@ -29,6 +29,32 @@ class Grid
 		added
 	end
 
+	def check_winner
+		winner = " "
+		r = check_rows
+		c = check_columns
+		d = check_diagonals
+		if r != " "
+			winner = r 
+		elsif c != " "
+			winner = c 
+		elsif d != " "
+			winner = d 
+		end
+		winner
+	end
+
+	def moves_remaining?
+		remaining = false
+		(0..6).each do |i|
+			if @placements[0][i] == " "
+				remaining = true
+				break
+			end
+		end
+		return remaining
+	end
+
 	def check_rows
 		winner = " "
 		(0..5).each do |row|
@@ -92,20 +118,6 @@ class Grid
 		winner
 	end
 
-	def check_winner
-		winner = " "
-		r = check_rows
-		c = check_columns
-		d = check_diagonals
-		if r != " "
-			winner = r 
-		elsif c != " "
-			winner = c 
-		elsif d != " "
-			winner = d 
-		end
-		winner
-	end
 end
 
 class Game
@@ -119,8 +131,7 @@ class Game
 	def start_game
 		grid = Grid.new
 		@current_player = 'O'
-		#while grid.check_winner == '' do
-		2.times do
+		while (grid.check_winner == '' && grid.moves_remaining?) do
 			puts "Player #{@current_player}, your turn:"
 			@move = gets.chomp
 			if @move == 'q'
@@ -129,6 +140,10 @@ class Game
 			grid.drop(@current_player, @move.to_i - 1)
 			puts grid.layout
 			swap_player
+		end
+		winner = grid.check_winner
+		if winner != ''
+			puts "Player #{winner} wins!"
 		end
 	end
 
@@ -140,3 +155,5 @@ class Game
 		end
 	end
 end
+
+Game.new

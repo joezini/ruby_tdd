@@ -102,9 +102,6 @@ end
 describe Game do
 	describe '#initialize' do
 		it "prints 'Welcome to Connect Four!' to the screen" do
-			# game = instance_double('Game')
-			#expect(Game).to receive(:fake_start_game).and_return("Fake game start successfully mocked")
-			
 			expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
 			expect_any_instance_of(Game).to receive(:start_game)
 			Game.new 
@@ -112,15 +109,42 @@ describe Game do
 	end
 
 	describe '#start_game' do
-		xit "accepts input from the first player and prints the new layout" do
+		it "aks the first player for a move and quits" do
 			expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
 			expect(STDOUT).to receive(:puts).with("Player O, your turn:")
-			expect(subject).to receive(:gets).and_return("4\n")
+			expect_any_instance_of(Game).to receive(:gets).and_return("q\n")
+			Game.new
+		end
+
+		it "accepts input from the first player and prints the new layout" do
+			expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
+			expect(STDOUT).to receive(:puts).with("Player O, your turn:")
+			expect_any_instance_of(Game).to receive(:gets).and_return("4\n")
 			expect(STDOUT).to receive(:puts).with(layout_with_one_token)
 			expect(STDOUT).to receive(:puts).with("Player X, your turn:")
-			expect(subject).to receive(:gets).and_return("q\n")
-			subject.start_game
-			#expect(subject.instance_variable_get(:@move)).to eq("4")
+			expect_any_instance_of(Game).to receive(:gets).and_return("q\n")
+			Game.new
+		end
+
+		it "announces a winner" do
+			expect(STDOUT).to receive(:puts).with("Welcome to Connect Four!")
+			expect(STDOUT).to receive(:puts).with("Player O, your turn:")
+			expect_any_instance_of(Game).to receive(:gets).and_return("4\n")
+			expect(STDOUT).to receive(:puts).twice
+			expect_any_instance_of(Game).to receive(:gets).and_return("3\n")
+			expect(STDOUT).to receive(:puts).twice
+			expect_any_instance_of(Game).to receive(:gets).and_return("4\n")
+			expect(STDOUT).to receive(:puts).twice
+			expect_any_instance_of(Game).to receive(:gets).and_return("3\n")
+			expect(STDOUT).to receive(:puts).twice
+			expect_any_instance_of(Game).to receive(:gets).and_return("4\n")
+			expect(STDOUT).to receive(:puts).twice
+			expect_any_instance_of(Game).to receive(:gets).and_return("3\n")
+			expect(STDOUT).to receive(:puts).twice
+			expect_any_instance_of(Game).to receive(:gets).and_return("4\n")
+			expect(STDOUT).to receive(:puts).once
+			expect(STDOUT).to receive(:puts).with("Player O wins!")
+			Game.new
 		end
 	end
 end
